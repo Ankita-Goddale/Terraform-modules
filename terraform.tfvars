@@ -15,7 +15,7 @@ public_route_cidr   = "0.0.0.0/0"
 private_route_cidr  = "0.0.0.0/0"
 
 # Node Group Configuration
-node_group_instance_types = ["t2.medium"]
+node_group_instance_types = ["t3.small"]
 node_group_desired      = 2
 node_group_min          = 1
 node_group_max          = 3
