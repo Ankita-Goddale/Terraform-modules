@@ -48,7 +48,7 @@ public_access_cidrs      = []  # Empty as public access is disabled
 enabled_cluster_log_types = ["api", "audit", "authenticator"]
 
 
-cluster_role_dependencies = []  # Usually empty or set with explicit resources if required
+#cluster_role_dependencies = []  # Usually empty or set with explicit resources if required
 
 ec2_ssh_key            = "my-key-pair"  # Replace with your EC2 key name
 
