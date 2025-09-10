@@ -205,3 +205,18 @@ variable "endpoints_sg_name" {
 variable "endpoints_sg_description" {
   type = string
 }
+
+variable "ec2_ami_id" {
+  type        = string
+  description = "AMI ID for the EC2 instance"
+}
+
+variable "ec2_instance_type" {
+  type        = string
+  description = "Instance type for the EC2 instance"
+}
+
+variable "ec2_instance_name" {
+  type        = string
+  description = "Name tag for the EC2 instance"
+}

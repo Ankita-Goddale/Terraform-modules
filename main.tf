@@ -100,3 +100,14 @@ module "vpc_endpoints" {
   private_dns_enabled    = var.private_dns_enabled
 }
 
+module "ec2_instance" {
+  source            = "./modules/baiston-host"
+  ami_id            = var.ec2_ami_id
+  instance_type     = var.ec2_instance_type
+  subnet_id         = module.vpc.public_subnets_ids[0]
+  security_group_ids = [module.security_group.workers_sg_id]
+  key_name          = var.ec2_ssh_key
+  instance_name     = var.ec2_instance_name
+  tags              = var.tags
+}
+

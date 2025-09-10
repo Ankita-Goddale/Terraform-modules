@@ -114,3 +114,7 @@ tags = {
   Name = "private-eks-cluster-ankita"
 }
 
+ec2_ami_id       = "ami-0123456789abcdef0"
+ec2_instance_type = "t2.micro"
+ec2_instance_name = "baiston-ec2-instance"
+
