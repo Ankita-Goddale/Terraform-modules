@@ -42,3 +42,4 @@ variable "private_route_cidr" {
   type        = string
   description = "CIDR block for private route"
 }
+

@@ -43,10 +43,6 @@ variable "tags" {
   description = "Tags for the EKS cluster"
 }
 
-variable "cluster_role_dependencies" {
-  type        = list(any)
-  description = "List of dependencies for EKS cluster"
-}
 
 variable "aws_region" {
   type        = string

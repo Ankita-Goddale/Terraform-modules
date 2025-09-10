@@ -14,7 +14,7 @@ resource "aws_eks_cluster" "this" {
 
   tags = var.tags
 
-  depends_on = var.cluster_role_dependencies
+  #depends_on = var.cluster_role_dependencies
 }
 
 resource "local_file" "kubeconfig" {

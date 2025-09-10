@@ -13,6 +13,16 @@ variable "vpc_id" {
   description = "The ID of the VPC"
 }
 
+variable "cluster_name" {
+  description = "The name of the cluster"
+  type        = string
+}
+
+variable "vpc_cidr" {
+  description = "The CIDR block for the VPC"
+  type        = string
+}
+
 variable "ingress_self_from_port" {
   type        = number
   description = "Ingress self from port"
