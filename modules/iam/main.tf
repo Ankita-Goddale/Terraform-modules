@@ -1,7 +1,11 @@
+# IAM Role for EKS Cluster
 resource "aws_iam_role" "eks_cluster" {
   name               = "${var.cluster_name}-cluster-role-ankita"
   assume_role_policy = data.aws_iam_policy_document.eks_assume_role.json
-  tags = { Name = "${var.cluster_name}-cluster-role" }
+
+  tags = {
+    Name = "${var.cluster_name}-cluster-role"
+  }
 }
 
 data "aws_iam_policy_document" "eks_assume_role" {
@@ -14,20 +18,21 @@ data "aws_iam_policy_document" "eks_assume_role" {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "eks_cluster_AmazonEKSClusterPolicy" {
+# Attach EKS Cluster Policies (dynamic)
+resource "aws_iam_role_policy_attachment" "eks_cluster_policies" {
+  for_each   = toset(var.eks_cluster_policies)
   role       = aws_iam_role.eks_cluster.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+  policy_arn = each.value
 }
 
-resource "aws_iam_role_policy_attachment" "eks_cluster_AmazonEKSServicePolicy" {
-  role       = aws_iam_role.eks_cluster.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
-}
-
+# IAM Role for Node Group
 resource "aws_iam_role" "node_group" {
   name               = "${var.cluster_name}-node-role-ankita"
   assume_role_policy = data.aws_iam_policy_document.node_assume_role.json
-  tags = { Name = "${var.cluster_name}-node-role" }
+
+  tags = {
+    Name = "${var.cluster_name}-node-role"
+  }
 }
 
 data "aws_iam_policy_document" "node_assume_role" {
@@ -40,22 +45,9 @@ data "aws_iam_policy_document" "node_assume_role" {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "node_AmazonEKSWorkerNodePolicy" {
+# Attach Node Group Policies (dynamic)
+resource "aws_iam_role_policy_attachment" "eks_node_policies" {
+  for_each   = toset(var.eks_node_policies)
   role       = aws_iam_role.node_group.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
-}
-
-resource "aws_iam_role_policy_attachment" "node_AmazonEC2ContainerRegistryReadOnly" {
-  role       = aws_iam_role.node_group.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-}
-
-resource "aws_iam_role_policy_attachment" "node_AmazonEKS_CNI_Policy" {
-  role       = aws_iam_role.node_group.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-}
-
-resource "aws_iam_role_policy_attachment" "node_AmazonSSMManagedInstanceCore" {
-  role       = aws_iam_role.node_group.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  policy_arn = each.value
 }
