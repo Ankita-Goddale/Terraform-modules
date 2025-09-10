@@ -15,7 +15,7 @@ public_route_cidr   = "0.0.0.0/0"
 private_route_cidr  = "0.0.0.0/0"
 
 # Node Group Configuration
-node_group_instance_types = ["t2.medium"]
+node_group_instance_types = ["t3.small"]
 node_group_desired      = 2
 node_group_min          = 1
 node_group_max          = 3
@@ -47,9 +47,6 @@ public_access_cidrs      = []  # Empty as public access is disabled
 
 enabled_cluster_log_types = ["api", "audit", "authenticator"]
 
-tags = {
-  Name = cluster_name
-}
 
 cluster_role_dependencies = []  # Usually empty or set with explicit resources if required
 
@@ -57,12 +54,10 @@ ec2_ssh_key            = "my-key-pair"  # Replace with your EC2 key name
 
 ami_type               = "AL2_x86_64"
 
-node_group_tags = {
-  Name = "${cluster_name}-managed-node"
-}
 
 # Security Group Configuration
-sg_name                  = "${cluster_name}-workers-sg"
+sg_name                  = "private-eks-cluster-ankita-workers-sg"
+endpoints_sg_name = "private-eks-cluster-ankita-endpoints-sg"
 sg_description           = "Security group for EKS worker nodes"
 #vpc_id                   = "vpc-xxxxxxxx"  # Replace with actual VPC ID
 ingress_self_from_port   = 0
@@ -74,7 +69,7 @@ ingress_self_description = "Allow intra-node communication"
 ingress_cp_from_port    = 443
 ingress_cp_to_port      = 443
 ingress_cp_protocol     = "tcp"
-ingress_cp_cidr_blocks  = [vpc_cidr]
+#ingress_cp_cidr_blocks  = [vpc_cidr]
 ingress_cp_description = "Allow nodes to reach control plane"
 
 egress_from_port        = 0
@@ -96,18 +91,26 @@ interface_endpoints = [
   "ec2"
 ]
 
-endpoints_sg_name        = "${cluster_name}-endpoints-sg"
+#endpoints_sg_name        = "${cluster_name}-endpoints-sg"
 endpoints_sg_description = "Security group for interface endpoints"
 
 ingress_from_port      = 443
 ingress_to_port        = 443
 ingress_protocol       = "tcp"
-ingress_cidr_blocks    = [vpc_cidr]
+#ingress_cidr_blocks    = [vpc_cidr]
+ingress_cidr_blocks = ["10.10.0.0/16"]
+ingress_cp_cidr_blocks = ["10.10.0.0/16"]
 
-egress_from_port       = 0
-egress_to_port         = 0
-egress_protocol        = "-1"
-egress_cidr_blocks     = ["0.0.0.0/0"]
+
 
 interface_vpc_endpoint_type = "Interface"
 private_dns_enabled        = true
+
+node_group_tags = {
+  Name = "private-eks-cluster-ankita-managed-node"
+}
+
+tags = {
+  Name = "private-eks-cluster-ankita"
+}
+
